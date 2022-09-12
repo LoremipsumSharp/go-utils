@@ -95,7 +95,7 @@ func GroupBy[TSlice ~[]T, T any, K comparable, V any](slice TSlice, keySelector 
 
 
 // Resolve the difference between two slice
-func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, right VSlice, leftKeySelector func(T) K, rightKeySelector func(V) K) diffResult[T, V] {
+func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, right VSlice, leftKeySelector func(T) K, rightKeySelector func(V) K) DiffResult[T, V] {
 	leftMap := ToMap(left, leftKeySelector, func(t T) T {
 		return t
 	})
@@ -126,7 +126,7 @@ func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, rig
 		rightOnly = append(rightOnly, rightMap[k])
 	}
 
-	return diffResult[T, V]{
+	return DiffResult[T, V]{
 		LeftOnly:  leftOnly,
 		RightOnly: rightOnly,
 	}
