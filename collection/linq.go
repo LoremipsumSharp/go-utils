@@ -17,6 +17,19 @@ func ToMap[TSlice ~[]T, T any, K comparable, V any](slice TSlice, keySelector fu
 	return m
 }
 
+func DistinctBy[TSlice ~[]T, T any, K comparable](slice TSlice, keySelector func(T) K) TSlice {
+	newSlice := make([]T, 0, len(slice))
+	seen := NewSet[K]()
+	for _, s := range slice {
+		key := keySelector(s)
+		if !seen.Contains(key) {
+			seen.Add(key)
+			newSlice = append(newSlice, s)
+		}
+	}
+	return newSlice
+}
+
 func FirstMatch[TSlice ~[]T, T any](slice TSlice, predicate func(T) bool) T {
 	for _, t := range slice {
 		if predicate(t) {
@@ -92,7 +105,6 @@ func GroupBy[TSlice ~[]T, T any, K comparable, V any](slice TSlice, keySelector 
 
 	return grouping
 }
-
 
 // Resolve the difference between two slice
 func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, right VSlice, leftKeySelector func(T) K, rightKeySelector func(V) K) DiffResult[T, V] {
