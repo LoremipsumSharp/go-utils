@@ -41,6 +41,15 @@ func FirstMatch[TSlice ~[]T, T any](slice TSlice, predicate func(T) bool) T {
 	return zero
 }
 
+func Select[TSlice ~[]T, VSlice ~[]V, T any, V any](source TSlice, selector func(t T) V) VSlice {
+	var result VSlice
+	for _, t := range source {
+		selected := selector(t)
+		result = append(result, selected)
+	}
+	return result
+}
+
 func Filter[TSlice ~[]T, T any](slice TSlice, predicate func(T) bool) TSlice {
 	selected := make(TSlice, 0)
 	for _, t := range slice {
