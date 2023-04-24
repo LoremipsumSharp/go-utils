@@ -50,6 +50,17 @@ func FileExists(path string) (bool, error) {
 	return true, err
 }
 
+func AppendLine(filepath, lineContent string) error {
+	f, err := os.OpenFile(filepath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		return err
+	}
+	if _, err = f.WriteString(lineContent + "\n"); err != nil {
+		return err
+	}
+	return nil
+}
+
 
 func DirectoryExists(path string) bool {
 	info, err := os.Stat(path)
