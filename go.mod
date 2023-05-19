@@ -1,4 +1,4 @@
-module github.com/loremipsumsharp/go-utils
+module github.com/LoremipsumSharp/go-utils
 
 go 1.18
 
