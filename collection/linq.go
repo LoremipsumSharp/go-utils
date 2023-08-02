@@ -1,5 +1,11 @@
 package collection
 
+import (
+	"math"
+
+	"golang.org/x/exp/constraints"
+)
+
 func ToSet[TSlice ~[]T, T any, K comparable](slice TSlice, keySelector func(T) K) Set[K] {
 	set := NewSet(make([]K, 0)...)
 	for _, t := range slice {
@@ -151,5 +157,20 @@ func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, rig
 		LeftOnly:  leftOnly,
 		RightOnly: rightOnly,
 	}
+}
 
+
+
+type Number interface {
+	constraints.Integer | constraints.Float
+}
+
+func Avg[T Number](numbers []T) T {
+	var sum T
+	var count T
+	for _, curValue := range numbers {
+		sum += curValue
+		count++
+	}
+	return sum / count
 }
