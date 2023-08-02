@@ -1,8 +1,6 @@
 package collection
 
 import (
-	"math"
-
 	"golang.org/x/exp/constraints"
 )
 
