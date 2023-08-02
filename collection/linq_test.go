@@ -55,3 +55,7 @@ type User struct {
 	Name string
 }
 
+func TestRange(t *testing.T) {
+	slice:=Range(0,6);
+	assert.True(t,len(slice) == 7)
+}
