@@ -158,6 +158,27 @@ func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, rig
 }
 
 
+// Skip the first N items of the slice.
+func Skip[T any](items []T, n int) []T {
+	if len(items) <= n {
+		return nil
+	}
+
+	return items[n:]
+}
+
+// Take up to N items from the slice
+func Take[T any](items []T, n int) []T {
+	if len(items) == 0 {
+		return nil
+	} else if len(items) < n {
+		return items[0:]
+	}
+
+	return items[0:n]
+}
+
+
 
 type Number interface {
 	constraints.Integer | constraints.Float
