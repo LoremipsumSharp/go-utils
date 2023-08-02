@@ -3,6 +3,8 @@ package collection
 import (
 	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDiff(t *testing.T) {
@@ -44,7 +46,7 @@ func TestSelect(t *testing.T) {
 		return u.Name
 	})
 
-	fmt.Printf("length of names : %d",len(names))
+	fmt.Printf("length of names : %d", len(names))
 
 }
 
@@ -52,3 +54,4 @@ type User struct {
 	Id   int
 	Name string
 }
+

@@ -193,3 +193,11 @@ func Avg[T Number](numbers []T) T {
 	}
 	return sum / count
 }
+
+func Range[T constraints.Integer](min, max T) []T {
+	result := make([]T, max-min+1)
+	for i := range result {
+		result[i] = T(i) + min
+	}
+	return result
+}
