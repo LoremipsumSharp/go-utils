@@ -86,7 +86,7 @@ func (m *SyncMap[K, V]) Values() []V {
 }
 
 // Values returns all the values in the map by key inputs
-func (m *SyncMap[K, V]) ValuesByKeys(keys []string) []V {
+func (m *SyncMap[K, V]) ValuesByKeys(keys []K) []V {
 	var values []V
 	for _, key := range keys {
 		val, ok := m.m.Load(key)
