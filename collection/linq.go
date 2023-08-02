@@ -157,7 +157,6 @@ func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, rig
 	}
 }
 
-
 // Skip the first N items of the slice.
 func Skip[T any](items []T, n int) []T {
 	if len(items) <= n {
@@ -178,13 +177,24 @@ func Take[T any](items []T, n int) []T {
 	return items[0:n]
 }
 
-
-
 type Number interface {
 	constraints.Integer | constraints.Float
 }
 
 func Avg[T Number](numbers []T) T {
+	var sum T
+	var count T
+	for _, curValue := range numbers {
+		sum += curValue
+		count++
+	}
+	return sum / count
+}
+
+func AvgOrDefault[T Number](numbers []T, defaultNumber T) T {
+	if len(numbers) <= 0 {
+		return defaultNumber
+	}
 	var sum T
 	var count T
 	for _, curValue := range numbers {
