@@ -52,71 +52,102 @@ func NowDatetimeNsStr() string {
 	return time.Now().Format(DatetimeNsFormat)
 }
 
-// BeginOfYear begin of year
-func BeginOfYear() time.Time {
-	now := time.Now()
-	return time.Date(now.Year(), time.January, 1, 0, 0, 0, 0, now.Location())
+// BeginOfMinute return beginning minute time of day.
+// Play: https://go.dev/play/p/ieOLVJ9CiFT
+func BeginOfMinute(t time.Time) time.Time {
+	y, m, d := t.Date()
+	return time.Date(y, m, d, t.Hour(), t.Minute(), 0, 0, t.Location())
 }
 
-// EndOfYear end of year
-func EndOfYear() time.Time {
-	return BeginOfYear().AddDate(1, 0, 0).Add(-time.Nanosecond)
+// EndOfMinute return end minute time of day.
+// Play: https://go.dev/play/p/yrL5wGzPj4z
+func EndOfMinute(t time.Time) time.Time {
+	y, m, d := t.Date()
+	return time.Date(y, m, d, t.Hour(), t.Minute(), 59, int(time.Second-time.Nanosecond), t.Location())
 }
 
-// BeginOfMonth begin of month
-func BeginOfMonth() time.Time {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+// BeginOfHour return beginning hour time of day.
+// Play: https://go.dev/play/p/GhdGFnDWpYs
+func BeginOfHour(t time.Time) time.Time {
+	y, m, d := t.Date()
+	return time.Date(y, m, d, t.Hour(), 0, 0, 0, t.Location())
 }
 
-// EndOfMonth end of month
-func EndOfMonth() time.Time {
-	return BeginOfMonth().AddDate(0, 1, 0).Add(-time.Nanosecond)
+// EndOfHour return end hour time of day.
+// Play: https://go.dev/play/p/6ce3j_6cVqN
+func EndOfHour(t time.Time) time.Time {
+	y, m, d := t.Date()
+	return time.Date(y, m, d, t.Hour(), 59, 59, int(time.Second-time.Nanosecond), t.Location())
 }
 
-// BeginOfWeek begin of week (week begin from Sunday)
-func BeginOfWeek() time.Time {
-	now := time.Now()
-	y, m, d := now.AddDate(0, 0, 0-int(now.Weekday())).Date()
-	return time.Date(y, m, d, 0, 0, 0, 0, now.Location())
+// BeginOfDay return beginning hour time of day.
+// Play: https://go.dev/play/p/94m_UT6cWs9
+func BeginOfDay(t time.Time) time.Time {
+	y, m, d := t.Date()
+	return time.Date(y, m, d, 0, 0, 0, 0, t.Location())
 }
 
-// EndOfWeek end of week (week begin from Sunday)
-func EndOfWeek() time.Time {
-	return BeginOfWeek().AddDate(0, 0, 7).Add(-time.Nanosecond)
+// EndOfDay return end time of day.
+// Play: https://go.dev/play/p/eMBOvmq5Ih1
+func EndOfDay(t time.Time) time.Time {
+	y, m, d := t.Date()
+	return time.Date(y, m, d, 23, 59, 59, int(time.Second-time.Nanosecond), t.Location())
 }
 
-// BeginOfDay begin of day
-func BeginOfDay() time.Time {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+// BeginOfWeek return beginning week, default week begin from Sunday.
+// Play: https://go.dev/play/p/ynjoJPz7VNV
+func BeginOfWeek(t time.Time, beginFrom ...time.Weekday) time.Time {
+	var beginFromWeekday = time.Sunday
+	if len(beginFrom) > 0 {
+		beginFromWeekday = beginFrom[0]
+	}
+	y, m, d := t.AddDate(0, 0, int(beginFromWeekday-t.Weekday())).Date()
+	beginOfWeek := time.Date(y, m, d, 0, 0, 0, 0, t.Location())
+	if beginOfWeek.After(t) {
+		return beginOfWeek.AddDate(0, 0, -7)
+	}
+	return beginOfWeek
 }
 
-// EndOfDay end of day
-func EndOfDay() time.Time {
-	return BeginOfDay().AddDate(0, 0, 1).Add(-time.Nanosecond)
+// EndOfWeek return end week time, default week end with Saturday.
+// Play: https://go.dev/play/p/i08qKXD9flf
+func EndOfWeek(t time.Time, endWith ...time.Weekday) time.Time {
+	var endWithWeekday = time.Saturday
+	if len(endWith) > 0 {
+		endWithWeekday = endWith[0]
+	}
+	y, m, d := t.AddDate(0, 0, int(endWithWeekday-t.Weekday())).Date()
+	var endWithWeek = time.Date(y, m, d, 23, 59, 59, int(time.Second-time.Nanosecond), t.Location())
+	if endWithWeek.Before(t) {
+		endWithWeek = endWithWeek.AddDate(0, 0, 7)
+	}
+	return endWithWeek
 }
 
-// BeginOfHour begin of hour
-func BeginOfHour() time.Time {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), 0, 0, 0, now.Location())
+// BeginOfMonth return beginning of month.
+// Play: https://go.dev/play/p/bWXVFsmmzwL
+func BeginOfMonth(t time.Time) time.Time {
+	y, m, _ := t.Date()
+	return time.Date(y, m, 1, 0, 0, 0, 0, t.Location())
 }
 
-// EndOfHour end of hour
-func EndOfHour() time.Time {
-	return BeginOfHour().Add(time.Hour).Add(-time.Nanosecond)
+// EndOfMonth return end of month.
+// Play: https://go.dev/play/p/_GWh10B3Nqi
+func EndOfMonth(t time.Time) time.Time {
+	return BeginOfMonth(t).AddDate(0, 1, 0).Add(-time.Nanosecond)
 }
 
-// BeginOfMinute begin of minute
-func BeginOfMinute() time.Time {
-	now := time.Now()
-	return time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), 0, 0, now.Location())
+// BeginOfYear return the date time at the begin of year.
+// Play: https://go.dev/play/p/i326DSwLnV8
+func BeginOfYear(t time.Time) time.Time {
+	y, _, _ := t.Date()
+	return time.Date(y, time.January, 1, 0, 0, 0, 0, t.Location())
 }
 
-// EndOfMinute end of minute
-func EndOfMinute() time.Time {
-	return BeginOfMinute().Add(time.Minute).Add(-time.Nanosecond)
+// EndOfYear return the date time at the end of year.
+// Play: https://go.dev/play/p/G01cKlMCvNm
+func EndOfYear(t time.Time) time.Time {
+	return BeginOfYear(t).AddDate(1, 0, 0).Add(-time.Nanosecond)
 }
 
 // UnixToTime convert timestamp (second) to time.Time
