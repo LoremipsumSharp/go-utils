@@ -211,3 +211,16 @@ func Range[T constraints.Integer](min, max T) []T {
 	}
 	return result
 }
+
+
+func Max[T Number](numbers ...T) T {
+	max := numbers[0]
+
+	for _, v := range numbers {
+		if max < v {
+			max = v
+		}
+	}
+
+	return max
+}
