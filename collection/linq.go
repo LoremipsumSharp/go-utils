@@ -212,7 +212,6 @@ func Range[T constraints.Integer](min, max T) []T {
 	return result
 }
 
-
 func Max[T Number](numbers ...T) T {
 	max := numbers[0]
 
@@ -225,8 +224,6 @@ func Max[T Number](numbers ...T) T {
 	return max
 }
 
-
-
 func Concat[T any](slices ...[]T) []T {
 	var total int
 	for _, s := range slices {
@@ -238,4 +235,26 @@ func Concat[T any](slices ...[]T) []T {
 		i += copy(result[i:], s)
 	}
 	return result
+}
+
+func First[T any](list []T) T {
+	return list[0]
+}
+
+func FirstOrDefault[T any](list []T, defaultVal T) T {
+	if len(list) <= 0 {
+		return defaultVal
+	}
+	return list[0]
+}
+
+func Last[T any](list []T) T {
+	return list[len(list)-1]
+}
+
+func LastOrDefault[T any](s []T, defaultVal T) T {
+	if len(s) > 0 {
+		return s[len(s)-1]
+	}
+	return defaultVal
 }
