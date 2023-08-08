@@ -187,7 +187,12 @@ func TimeToDateStr(t time.Time) string {
 
 // DateStrToTime convert date string to time.Time
 func DateStrToTime(val string) (time.Time, error) {
-	return time.Parse(DateFormat, val)
+	var zero time.Time
+	loc, err := time.LoadLocation("Local")
+	if err != nil {
+		return zero, err
+	}
+	return time.ParseInLocation(DateFormat, val, loc)
 }
 
 // DatetimeStrToTime convert datetime string (millisecond) to time.Time
