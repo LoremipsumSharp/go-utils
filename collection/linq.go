@@ -2,6 +2,7 @@ package collection
 
 import (
 	"golang.org/x/exp/constraints"
+	"sort"
 )
 
 func ToSet[TSlice ~[]T, T any, K comparable](slice TSlice, keySelector func(T) K) Set[K] {
@@ -257,4 +258,15 @@ func LastOrDefault[T any](s []T, defaultVal T) T {
 		return s[len(s)-1]
 	}
 	return defaultVal
+}
+
+
+
+func Median[T Number](n ...T) (median T) {
+	sort.Slice(n, func(x, y int) bool { return n[x] < n[y] })
+	if (len(n) % 2) == 0 {
+		return ((n[len(n)/2-1]) + (n[(len(n) / 2)])) / 2
+	} else {
+		return n[len(n)/2]
+	}
 }
