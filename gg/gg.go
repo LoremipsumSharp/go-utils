@@ -1,4 +1,4 @@
-package utils
+package gg
 
 func If[T any](cond bool, a, b T) T {
 	if cond {
