@@ -270,3 +270,14 @@ func Median[T Number](n ...T) (median T) {
 		return n[len(n)/2]
 	}
 }
+
+
+func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) R) []R {
+	result := make([]R, 0, len(in))
+
+	for k, v := range in {
+		result = append(result, iteratee(k, v))
+	}
+
+	return result
+}
