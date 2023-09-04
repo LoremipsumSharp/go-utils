@@ -23,7 +23,7 @@ func (i ImmutableMap[K, V]) Get(key K) (V, bool) {
 
 func (i ImmutableMap[K, V]) Keys() []K {
 	keys := []K{}
-	for k, _ := range i.m {
+	for k := range i.m {
 		keys = append(keys, k)
 	}
 	return keys
