@@ -6,6 +6,7 @@ require (
 	github.com/duke-git/lancet/v2 v2.2.4
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/hashicorp/go-multierror v1.1.1
+	github.com/huandu/go-clone v1.6.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/stretchr/testify v1.8.3
 	golang.org/x/exp v0.0.0-20230801115018-d63ba01acd4b
