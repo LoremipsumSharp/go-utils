@@ -281,3 +281,78 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, val
 
 	return result
 }
+
+
+func OrderByDescending[TSource comparable, TKey constraints.Ordered](source []TSource, key func(elem TSource) TKey) []TSource {
+	result := make([]TSource, 0)
+	pairs := make(map[TKey]TSource)
+	keys := make([]TKey, len(source))
+
+	for i, v := range source {
+		out := key(v)
+		pairs[out] = v
+
+		// TODO(kfcampbell): put key in sorted order here to prevent unnecessary
+		// sorting below
+		keys[i] = out
+	}
+
+	keys = quickSortDescending(keys)
+
+	// iterate through sorted keys and append to result slice in order
+	for _, v := range keys {
+		result = append(result, pairs[v])
+	}
+	return result
+}
+
+func OrderBy[TSource comparable, TKey constraints.Ordered](source []TSource, key func(elem TSource) TKey) []TSource {
+	result := make([]TSource, 0)
+	pairs := make(map[TKey]TSource)
+	keys := make([]TKey, len(source))
+
+	for i, v := range source {
+		out := key(v)
+		pairs[out] = v
+
+		// TODO(kfcampbell): put key in sorted order here to prevent unnecessary
+		// sorting below
+		keys[i] = out
+	}
+
+	keys = quickSort(keys)
+
+	// iterate through sorted keys and append to result slice in order
+	for _, v := range keys {
+		result = append(result, pairs[v])
+	}
+	return result
+}
+
+
+func quickSortDescending[TSource constraints.Ordered](input []TSource) []TSource {
+	for i := 1; i < len(input); i++ {
+		j := i
+		for j > 0 {
+			if input[j-1] < input[j] {
+				input[j-1], input[j] = input[j], input[j-1]
+			}
+			j = j - 1
+		}
+	}
+	return input
+}
+
+
+func quickSort[TSource constraints.Ordered](input []TSource) []TSource {
+	for i := 1; i < len(input); i++ {
+		j := i
+		for j > 0 {
+			if input[j-1] > input[j] {
+				input[j-1], input[j] = input[j], input[j-1]
+			}
+			j = j - 1
+		}
+	}
+	return input
+}
