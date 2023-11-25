@@ -3,6 +3,7 @@ module github.com/LoremipsumSharp/go-utils
 go 1.18
 
 require (
+	github.com/deckarep/golang-set/v2 v2.4.0
 	github.com/duke-git/lancet/v2 v2.2.4
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/hashicorp/go-multierror v1.1.1
