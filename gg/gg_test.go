@@ -8,7 +8,10 @@ import (
 
 func TestIsZero(t *testing.T) {
 	var foo Foo
-	assert.True(t,IsZero(foo)) 
+	assert.True(t, IsZero(foo))
+
+	foo.Bar = "bar"
+	assert.False(t, IsZero(foo))
 }
 
 type Foo struct {
