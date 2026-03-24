@@ -10,6 +10,7 @@ const (
 	DatetimeFormat   = "2006-01-02 15:04:05"
 	DatetimeMsFormat = "2006-01-02 15:04:05.999"
 	DatetimeNsFormat = "2006-01-02 15:04:05.999999999"
+	DatetimeISO8601Format = "2006-01-02T15:04:05Z07:00"
 )
 
 var (
@@ -40,6 +41,11 @@ func NowDateStr() string {
 // NowDatetimeStr now datetime string
 func NowDatetimeStr() string {
 	return time.Now().Format(DatetimeFormat)
+}
+
+// NowDatetimeISO8601Str now datetime string (ISO8601 with timezone offset, UTC+8)
+func NowDatetimeISO8601Str() string {
+	return time.Now().In(BeijingLoc).Format(DatetimeISO8601Format)
 }
 
 // NowDatetimeMsStr now datetime string (millisecond)
