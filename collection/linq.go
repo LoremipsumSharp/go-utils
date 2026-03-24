@@ -1,8 +1,9 @@
 package collection
 
 import (
-	"golang.org/x/exp/constraints"
 	"sort"
+
+	"golang.org/x/exp/constraints"
 )
 
 func ToSet[TSlice ~[]T, T any, K comparable](slice TSlice, keySelector func(T) K) Set[K] {
@@ -158,6 +159,25 @@ func Diff[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, rig
 	}
 }
 
+func IntersectBy[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, right VSlice, leftKeySelector func(T) K, rightKeySelector func(V) K) TSlice {
+	rightMap := ToMap(right, rightKeySelector, func(v V) struct{} {
+		return struct{}{}
+	})
+
+	intersected := make(TSlice, 0)
+	for _, item := range left {
+		if _, found := rightMap[leftKeySelector(item)]; found {
+			intersected = append(intersected, item)
+		}
+	}
+
+	return intersected
+}
+
+func InterceptBy[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSlice, right VSlice, leftKeySelector func(T) K, rightKeySelector func(V) K) TSlice {
+	return IntersectBy(left, right, leftKeySelector, rightKeySelector)
+}
+
 // Skip the first N items of the slice.
 func Skip[T any](items []T, n int) []T {
 	if len(items) <= n {
@@ -260,8 +280,6 @@ func LastOrDefault[T any](s []T, defaultVal T) T {
 	return defaultVal
 }
 
-
-
 func Median[T Number](n ...T) (median T) {
 	sort.Slice(n, func(x, y int) bool { return n[x] < n[y] })
 	if (len(n) % 2) == 0 {
@@ -270,7 +288,6 @@ func Median[T Number](n ...T) (median T) {
 		return n[len(n)/2]
 	}
 }
-
 
 func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, value V) R) []R {
 	result := make([]R, 0, len(in))
@@ -281,7 +298,6 @@ func MapToSlice[K comparable, V any, R any](in map[K]V, iteratee func(key K, val
 
 	return result
 }
-
 
 func OrderByDescending[TSource comparable, TKey constraints.Ordered](source []TSource, key func(elem TSource) TKey) []TSource {
 	result := make([]TSource, 0)
@@ -329,7 +345,6 @@ func OrderBy[TSource comparable, TKey constraints.Ordered](source []TSource, key
 	return result
 }
 
-
 func quickSortDescending[TSource constraints.Ordered](input []TSource) []TSource {
 	for i := 1; i < len(input); i++ {
 		j := i
@@ -342,7 +357,6 @@ func quickSortDescending[TSource constraints.Ordered](input []TSource) []TSource
 	}
 	return input
 }
-
 
 func quickSort[TSource constraints.Ordered](input []TSource) []TSource {
 	for i := 1; i < len(input); i++ {

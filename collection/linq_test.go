@@ -29,6 +29,39 @@ func TestDiff(t *testing.T) {
 	fmt.Printf("left length:%d,right length:%d", len(diffResult.LeftOnly), len(diffResult.RightOnly))
 }
 
+func TestIntersectBy(t *testing.T) {
+	left := []User{
+		{Id: 1, Name: "A"},
+		{Id: 2, Name: "B"},
+		{Id: 3, Name: "C"},
+	}
+	right := []User{
+		{Id: 2, Name: "B2"},
+		{Id: 4, Name: "D"},
+	}
+
+	intersected := IntersectBy(left, right, func(u User) int { return u.Id }, func(u User) int { return u.Id })
+
+	assert.Equal(t, 1, len(intersected))
+	assert.Equal(t, 2, intersected[0].Id)
+	assert.Equal(t, "B", intersected[0].Name)
+}
+
+func TestInterceptBy(t *testing.T) {
+	left := []User{
+		{Id: 1, Name: "A"},
+		{Id: 2, Name: "B"},
+	}
+	right := []User{
+		{Id: 2, Name: "B2"},
+	}
+
+	intersected := InterceptBy(left, right, func(u User) int { return u.Id }, func(u User) int { return u.Id })
+
+	assert.Equal(t, 1, len(intersected))
+	assert.Equal(t, 2, intersected[0].Id)
+}
+
 func TestSelect(t *testing.T) {
 	var users []User
 	user1 := User{
@@ -56,6 +89,6 @@ type User struct {
 }
 
 func TestRange(t *testing.T) {
-	slice:=Range(0,6);
-	assert.True(t,len(slice) == 7)
+	slice := Range(0, 6)
+	assert.True(t, len(slice) == 7)
 }
