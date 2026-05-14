@@ -47,6 +47,24 @@ func TestIntersectBy(t *testing.T) {
 	assert.Equal(t, "B", intersected[0].Name)
 }
 
+func TestJoinBy(t *testing.T) {
+	left := []User{
+		{Id: 1, Name: "A"},
+		{Id: 2, Name: "B"},
+	}
+	right := []User{
+		{Id: 2, Name: "B2"},
+		{Id: 2, Name: "B3"},
+		{Id: 3, Name: "C"},
+	}
+
+	joined := JoinBy(left, right, func(u User) int { return u.Id }, func(u User) int { return u.Id }, func(l User, r User) string {
+		return fmt.Sprintf("%s-%s", l.Name, r.Name)
+	})
+
+	assert.Equal(t, []string{"B-B2", "B-B3"}, joined)
+}
+
 func TestInterceptBy(t *testing.T) {
 	left := []User{
 		{Id: 1, Name: "A"},

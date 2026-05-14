@@ -178,6 +178,30 @@ func InterceptBy[TSlice ~[]T, VSlice ~[]V, T any, V any, K comparable](left TSli
 	return IntersectBy(left, right, leftKeySelector, rightKeySelector)
 }
 
+// JoinBy returns the result of joining two slices on matching keys.
+func JoinBy[LeftSlice ~[]Left, RightSlice ~[]Right, Left any, Right any, K comparable, Result any](left LeftSlice, right RightSlice, leftKeySelector func(Left) K, rightKeySelector func(Right) K, resultSelector func(Left, Right) Result) []Result {
+	rightLookup := make(map[K][]Right)
+	for _, item := range right {
+		key := rightKeySelector(item)
+		rightLookup[key] = append(rightLookup[key], item)
+	}
+
+	joined := make([]Result, 0)
+	for _, leftItem := range left {
+		key := leftKeySelector(leftItem)
+		rightItems, found := rightLookup[key]
+		if !found {
+			continue
+		}
+
+		for _, rightItem := range rightItems {
+			joined = append(joined, resultSelector(leftItem, rightItem))
+		}
+	}
+
+	return joined
+}
+
 // Skip the first N items of the slice.
 func Skip[T any](items []T, n int) []T {
 	if len(items) <= n {
